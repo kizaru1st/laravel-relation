@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -25,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -36,7 +39,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categories = Category::findOrFail($request->category_id);
+        $categories->products()->create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->slug),
+            'price' => $request->price
+        ]);
+        return redirect()->route('product.index')->with('message','Product Created');
     }
 
     /**
