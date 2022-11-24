@@ -29,4 +29,5 @@ Route::controller(StudentController::class)->group(function() {
 
 Route::prefix('admin')->group(function() {
    Route::resource('category', CategoryController::class);
+   Route::resource('product', ProductController::class);
 });
